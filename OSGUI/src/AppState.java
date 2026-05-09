@@ -36,8 +36,8 @@ public class AppState {
     TextArea comparisonArea;
     TextArea conclusionArea;
 
-    ToggleButton preemptiveSjfButton;
-    ToggleButton nonPreemptiveSjfButton;
+    ToggleButton preemptiveButton;
+    ToggleButton nonPreemptiveButton;
 
     final List<TextField[]> inputFields = new ArrayList<>();
 
@@ -48,16 +48,22 @@ public class AppState {
 
     ComparisonService.ScenarioType selectedScenario = ComparisonService.ScenarioType.CUSTOM;
 
-    boolean isPreemptiveSjfSelected() {
-        return preemptiveSjfButton == null || preemptiveSjfButton.isSelected();
+    boolean isPreemptiveSelected() {
+        return preemptiveButton == null || preemptiveButton.isSelected();
     }
 
     String getSelectedSjfModeText() {
-        if (isPreemptiveSjfSelected()) {
+        if (isPreemptiveSelected()) {
             return "Preemptive SJF / SRTF";
         }
-
         return "Non-preemptive SJF";
+    }
+
+    String getSelectedPriorityModeText() {
+        if (isPreemptiveSelected()) {
+            return "Preemptive Priority Scheduling";
+        }
+        return "Non-preemptive Priority Scheduling";
     }
 
     String getScenarioDisplayName(ComparisonService.ScenarioType scenario) {
@@ -79,9 +85,9 @@ public class AppState {
         String selectedStyle = "-fx-background-color: #1f5fa8; -fx-text-fill: white; -fx-font-weight: bold;";
         String normalStyle = "-fx-background-color: #e6e6e6; -fx-text-fill: black;";
 
-        if (preemptiveSjfButton != null && nonPreemptiveSjfButton != null) {
-            preemptiveSjfButton.setStyle(preemptiveSjfButton.isSelected() ? selectedStyle : normalStyle);
-            nonPreemptiveSjfButton.setStyle(nonPreemptiveSjfButton.isSelected() ? selectedStyle : normalStyle);
+        if (preemptiveButton != null && nonPreemptiveButton != null) {
+            preemptiveButton.setStyle(preemptiveButton.isSelected() ? selectedStyle : normalStyle);
+            nonPreemptiveButton.setStyle(nonPreemptiveButton.isSelected() ? selectedStyle : normalStyle);
         }
     }
 }

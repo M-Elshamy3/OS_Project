@@ -29,7 +29,7 @@ public class InputPanelFactory {
         state.countSpinner.setPrefWidth(90);
 
         HBox controls = buildMainControls(state);
-        HBox sjfModeControls = buildSjfModeControls(state);
+        HBox modeControls = buildModeControls(state);
 
         state.inputGrid = new GridPane();
         state.inputGrid.setHgap(10);
@@ -44,7 +44,7 @@ public class InputPanelFactory {
                 10,
                 sectionTitle,
                 controls,
-                sjfModeControls,
+                modeControls,
                 state.inputGrid,
                 new Label("Validation Behavior"),
                 state.validationArea
@@ -110,34 +110,38 @@ public class InputPanelFactory {
         return controls;
     }
 
-    private static HBox buildSjfModeControls(AppState state) {
-        state.preemptiveSjfButton = new ToggleButton("Preemptive SJF");
-        state.nonPreemptiveSjfButton = new ToggleButton("Non-preemptive SJF");
+    private static HBox buildModeControls(AppState state) {
+        // Single toggle that controls BOTH SJF and Priority Scheduling
+        state.preemptiveButton = new ToggleButton("Preemptive");
+        state.nonPreemptiveButton = new ToggleButton("Non-preemptive");
 
-        ToggleGroup sjfModeGroup = new ToggleGroup();
+        ToggleGroup modeGroup = new ToggleGroup();
 
-        state.preemptiveSjfButton.setToggleGroup(sjfModeGroup);
-        state.nonPreemptiveSjfButton.setToggleGroup(sjfModeGroup);
+        state.preemptiveButton.setToggleGroup(modeGroup);
+        state.nonPreemptiveButton.setToggleGroup(modeGroup);
 
-        state.preemptiveSjfButton.setSelected(true);
+        state.preemptiveButton.setSelected(true);
 
-        state.preemptiveSjfButton.setMinWidth(160);
-        state.nonPreemptiveSjfButton.setMinWidth(180);
+        state.preemptiveButton.setMinWidth(130);
+        state.nonPreemptiveButton.setMinWidth(150);
 
         state.styleModeButtons();
 
-        sjfModeGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+        modeGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if (newToggle == null) {
-                state.preemptiveSjfButton.setSelected(true);
+                state.preemptiveButton.setSelected(true);
             }
-
             state.styleModeButtons();
         });
 
+        Label note = new Label("(applies to both SJF and Priority Scheduling)");
+        note.setStyle("-fx-text-fill: #555555; -fx-font-size: 12px;");
+
         HBox box = new HBox(10,
-                new Label("Choose SJF Mode:"),
-                state.preemptiveSjfButton,
-                state.nonPreemptiveSjfButton
+                new Label("Choose Mode:"),
+                state.preemptiveButton,
+                state.nonPreemptiveButton,
+                note
         );
 
         box.setAlignment(Pos.CENTER_LEFT);
